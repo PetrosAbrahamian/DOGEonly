@@ -79,5 +79,9 @@ This project is open to contributions! Feel free to submit pull requests or repo
 
 For questions or feedback, reach out via GitHub or email.
 
-Note: This project does not include a license and is therefore proprietary. Please contact the repository owner for permission before using or distributing this code.
+## 🙏 Acknowledgments
+This project was developed with the assistance of AI tools to enhance efficiency and ensure best practices in coding.
+
+
+Note: This project does not include a license.
 
