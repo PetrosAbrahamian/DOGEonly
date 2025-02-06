@@ -78,26 +78,26 @@
             const requestURL = `${BASE_URL}/api/spending?page=${page}&start_year=${startYear}&end_year=${endYear}&query=${encodeURIComponent(query)}`;
             console.log("🚀 Sending API request to:", requestURL);
 
-  try {
+            try {
                 const response = await fetch(requestURL);
                 const data = await response.json();
 
                 if (!data || !data.results || !Array.isArray(data.results)) {
-                   document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
-
-
+                    document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
                     return;
                 }
 
-    // Process and populate the table with results
-    populateTable(data.results);
+                // Process and populate the table with results
+                populateTable(data.results);
 
-} catch (error) {
-    // Handle network or other unexpected errors
-    console.error("❌ Error fetching data:", error);
-    document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">An error occurred. Please check your connection and try again.</td></tr>`;
-}
-
+            } catch (error) {
+                // Handle network or other unexpected errors
+                console.error("❌ Error fetching data:", error);
+                document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">An error occurred. Please check your connection and try again.</td></tr>`;
+            } finally {
+                showLoader(false);
+            }
+        }
 
         // Populate table with data
         function populateTable(data) {
@@ -126,12 +126,14 @@
         }
 
         function nextPage() {
-            fetchData(currentPage + 1);
+            currentPage++;
+            fetchData(currentPage);
         }
 
         function prevPage() {
             if (currentPage > 1) {
-                fetchData(currentPage - 1);
+                currentPage--;
+                fetchData(currentPage);
             }
         }
 
