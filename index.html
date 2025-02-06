@@ -83,7 +83,9 @@
                 const data = await response.json();
 
                 if (!data || !data.results || !Array.isArray(data.results)) {
-                    document.getElementById("dataTable").innerHTML = <tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>;
+                   document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
+
+
                     return;
                 }
 
