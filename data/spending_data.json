@@ -1,0 +1,17 @@
+[
+    {
+        "award_id": "12345",
+        "recipient": "ABC Corp",
+        "amount": 500000,
+        "category": "Defense",
+        "description": "Supply of equipment"
+    },
+    {
+        "award_id": "67890",
+        "recipient": "XYZ Inc",
+        "amount": 750000,
+        "category": "Healthcare",
+        "description": "Medical research grant"
+    }
+    
+]

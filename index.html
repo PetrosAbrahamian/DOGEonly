@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Spending Data</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1 class="text-center">Federal Spending Data</h1>
+
+    <!-- Year Range Selector -->
+    <div class="row mb-3">
+        <div class="col">
+            <label for="startYear">Start Year:</label>
+            <select id="startYear" class="form-select"></select>
+        </div>
+        <div class="col">
+            <label for="endYear">End Year:</label>
+            <select id="endYear" class="form-select"></select>
+        </div>
+        <div class="col-auto align-self-end">
+            <button class="btn btn-primary" onclick="resetData()">Fetch Data</button>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by recipient, award ID, or amount..." oninput="debouncedSearch()">
+    </div>
+
+    <!-- Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Award ID</th>
+                <th>Recipient</th>
+                <th>Amount ($)</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <!-- Pagination Buttons -->
+    <div class="d-flex justify-content-center mt-3">
+        <button onclick="prevPage()" class="btn btn-primary me-2">Previous</button>
+        <span id="currentPageLabel">Page 1</span>
+        <button onclick="nextPage()" class="btn btn-primary ms-2">Next</button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loader" class="text-center my-3" style="display: none;">
+        <span>Loading...</span>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let allData = [];
+        let searchTimeout = null;
+        const BASE_URL = "http://127.0.0.1:5000";
+
+        // Fetch data from the backend
+        async function fetchData(page = 1) {
+            showLoader(true);
+
+            const startYear = document.getElementById('startYear').value;
+            const endYear = document.getElementById('endYear').value;
+            const query = document.getElementById('searchInput').value.trim();
+
+            if (!startYear || !endYear) {
+                alert("Please select both Start Year and End Year.");
+                showLoader(false);
+                return;
+            }
+
+            const requestURL = `${BASE_URL}/api/spending?page=${page}&start_year=${startYear}&end_year=${endYear}&query=${encodeURIComponent(query)}`;
+            console.log("🚀 Sending API request to:", requestURL);
+
+            try {
+                const response = await fetch(requestURL);
+                const data = await response.json();
+
+                if (!data || !data.results || !Array.isArray(data.results)) {
+                    document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
+                    return;
+                }
+
+                allData = data.results;
+                populateTable(allData);
+
+                currentPage = page;
+                document.getElementById('currentPageLabel').textContent = `Page ${currentPage}`;
+                updatePaginationButtons(data.results.length);
+            } catch (error) {
+                console.error("❌ Error fetching data:", error);
+                alert("Failed to fetch data. Please check your API and network connection.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        // Populate table with data
+        function populateTable(data) {
+            const table = document.getElementById('dataTable');
+            table.innerHTML = ""; // Clear existing rows
+
+            if (!Array.isArray(data) || data.length === 0) {
+                table.innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const row = `<tr>
+                    <td>${item["Award ID"] || "N/A"}</td>
+                    <td>${item["Recipient Name"] || "N/A"}</td>
+                    <td>$${item["Award Amount"] ? item["Award Amount"].toLocaleString() : "0"}</td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+        }
+
+        // Pagination handling
+        function updatePaginationButtons(resultCount) {
+            document.querySelector("button[onclick='prevPage()']").disabled = currentPage <= 1;
+            document.querySelector("button[onclick='nextPage()']").disabled = resultCount < 100;
+        }
+
+        function nextPage() {
+            fetchData(currentPage + 1);
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                fetchData(currentPage - 1);
+            }
+        }
+
+        function resetData() {
+            currentPage = 1;
+            fetchData(1);
+        }
+
+        function showLoader(isLoading) {
+            document.getElementById("loader").style.display = isLoading ? "block" : "none";
+        }
+
+        // Debounced search
+        function debouncedSearch() {
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            searchTimeout = setTimeout(() => {
+                currentPage = 1;
+                fetchData(1);
+            }, 300); // Adjust delay as needed
+        }
+
+        // Populate year dropdowns
+        const startYearSelect = document.getElementById('startYear');
+        const endYearSelect = document.getElementById('endYear');
+        const currentYear = new Date().getFullYear();
+
+        for (let year = 2000; year <= currentYear; year++) {
+            startYearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+            endYearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+        }
+
+        startYearSelect.value = "2022";
+        endYearSelect.value = "2022";
+
+        window.onload = () => {
+            fetchData(1);
+        };
+    </script>
+</body>
+</html>
+
