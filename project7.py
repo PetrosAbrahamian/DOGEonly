@@ -5,8 +5,13 @@ import requests
 
 app = Flask(__name__)
 
-# ✅ Allow CORS for local frontend
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})
+# ✅ Allow CORS for both Local & Deployed Frontend
+CORS(app, resources={
+    r"/api/*": {"origins": [
+        "http://127.0.0.1:5500",  # Local development
+        "https://dogeonly-frontend.onrender.com"  # Deployed frontend
+    ]}
+})
 
 # Configure caching
 cache = Cache(app, config={"CACHE_TYPE": "SimpleCache", "CACHE_DEFAULT_TIMEOUT": 300})
@@ -74,4 +79,5 @@ def get_spending():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # ✅ Ensure it runs on the correct host for deployment
+    app.run(host="0.0.0.0", port=10000, debug=True)
