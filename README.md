@@ -7,7 +7,7 @@ Federal Spending Explorer is an interactive web application that allows users to
 🌐 Live Demo
 
 Frontend (User Interface): https://dogeonly-1.onrender.com
-(Data might take some time to load)
+(Data may take some time to load)
 
 Backend API: https://dogeonly.onrender.com
 
