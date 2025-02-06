@@ -4,6 +4,7 @@
 
 Federal Spending Explorer is an interactive web application that allows users to explore U.S. government spending data. Users can filter spending data by year, search for specific recipients, and navigate through paginated results. The project utilizes data from USAspending.gov and is fully deployed on Render.
 
+
 🌐 Live Demo
 
 Frontend (User Interface): https://dogeonly-1.onrender.com
@@ -11,11 +12,14 @@ Frontend (User Interface): https://dogeonly-1.onrender.com
 
 Backend API: https://dogeonly.onrender.com
 
+
 🚀 Features
 
 ✅ Search federal spending by award ID, recipient name, or amount✅ Filter spending by year range✅ Paginated results for easy navigation✅ Fast API response with caching enabled✅ Fully deployed frontend and backend on Render✅ Calculates total amounts awarded to recipients (even across multiple years)
 
+
 🛠️ Tech Stack
+
 
 Frontend:
 
@@ -24,6 +28,7 @@ HTML, CSS, Bootstrap
 JavaScript (Fetch API for API requests)
 
 Hosted on Render (Static Site)
+
 
 Backend:
 
@@ -39,16 +44,21 @@ Data Source:
 
 USAspending.gov API (Official U.S. government spending data)
 
+
 ⚡ How to Run Locally
 
+
 If you want to run this project on your local machine:
+
 
 1️⃣ Clone the Repository
 
 git clone https://github.com/PetrosAbrahamian/DOGEonly.git
 cd DOGEonly
 
+
 2️⃣ Set Up the Backend
+
 
 Activate Virtual Environment
 
@@ -66,13 +76,18 @@ python project7.py
 
 Your backend should now be running at http://127.0.0.1:10000
 
+
 3️⃣ Set Up the Frontend
+
 
 Simply open index.html in a browser or use Live Server (VS Code Extension).
 
+
 📡 API Endpoints
 
+
 1️⃣ Get Federal Spending Data
+
 
 Endpoint: /api/spending
 
@@ -110,6 +125,7 @@ The total award amount displayed for each recipient represents the cumulative fu
 
 Changing the year range does not alter the total amount shown if the recipient received funds across those years. For example, HUMANA GOVERNMENT BUSINESS INC shows the same total amount for 2022 and 2017 if the award spans multiple years.
 
+
 🚀 How This Can Be Useful for DOGE
 
 This project provides a structured way to explore and analyze federal spending data, which can be useful for organizations like DOGE in several ways:
@@ -131,6 +147,7 @@ Customizable for Future Use
 Since this is an open-source project, DOGE can modify or extend it to add deeper analytics, generate reports, or visualize spending patterns with charts.
 
 It could be upgraded with AI-powered insights to predict future spending trends based on historical data.
+
 
 💡 Future Improvements
 
