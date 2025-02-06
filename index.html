@@ -78,24 +78,14 @@
             const requestURL = `${BASE_URL}/api/spending?page=${page}&start_year=${startYear}&end_year=${endYear}&query=${encodeURIComponent(query)}`;
             console.log("🚀 Sending API request to:", requestURL);
 
-        try {
-    const response = await fetch(requestURL);
+  try {
+                const response = await fetch(requestURL);
+                const data = await response.json();
 
-    // Check if the response is OK
-    if (!response.ok) {
-        console.error(`❌ Error: HTTP ${response.status} - ${response.statusText}`);
-        document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">Failed to fetch data. Please try again later.</td></tr>`;
-        return;
-    }
-
-    const data = await response.json();
-
-    // Check for valid data
-    if (!data || !data.results || !Array.isArray(data.results)) {
-        console.warn("⚠️ No valid results found in API response.");
-        document.getElementById("dataTable").innerHTML = `<tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>`;
-        return;
-    }
+                if (!data || !data.results || !Array.isArray(data.results)) {
+                    document.getElementById("dataTable").innerHTML = <tr><td colspan="3" class="text-center text-danger">No results found.</td></tr>;
+                    return;
+                }
 
     // Process and populate the table with results
     populateTable(data.results);
