@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 # ✅ Allow CORS for both Local & Deployed Frontend
 CORS(app, resources={
-    r"/api/*": {"origins": [
+    r"/*": {"origins": [
         "http://127.0.0.1:5500",  # Local development
-        "https://dogeonly-frontend.onrender.com"  # Deployed frontend
+        "https://dogeonly-1.onrender.com"  # ✅ Correct frontend URL
     ]}
 })
 
